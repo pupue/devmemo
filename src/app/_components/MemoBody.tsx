@@ -16,14 +16,15 @@ import { useEffect, useState } from "react";
 import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
+import { deleteMemo, updateMemo } from "@/actions";
+import type { Memo } from "@/types/memo";
 import { codeBlock } from "@blocknote/code-block";
 import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";
 import { useCreateBlockNote } from "@blocknote/react";
 import Markdown from "react-markdown";
 
 type Props = {
-	title: string;
-	contents: string;
+	data: Memo;
 };
 
 const schema = BlockNoteSchema.create({
@@ -35,15 +36,17 @@ const schema = BlockNoteSchema.create({
 	},
 });
 
-export default function MemoBody({ title, contents }: Props) {
+export default function MemoBody({ data }: Props) {
+	const { id, contents } = data;
+
 	const [isEditing, setIsEditing] = useState(false);
-	const [markdown, setMarkdown] = useState<string>(contents);
+	const [markdown, setMarkdown] = useState<string>(contents ?? "");
 
 	const editor = useCreateBlockNote({ schema, codeBlock });
 
 	useEffect(() => {
 		async function loadInitialHTML() {
-			const blocks = await editor.tryParseMarkdownToBlocks(contents);
+			const blocks = await editor.tryParseMarkdownToBlocks(contents ?? "");
 			editor.replaceBlocks(editor.document, blocks);
 		}
 		loadInitialHTML();
@@ -53,6 +56,7 @@ export default function MemoBody({ title, contents }: Props) {
 		if (!editor) return;
 		const blocks = editor.document;
 		const markdownFromBlocks = await editor.blocksToMarkdownLossy(blocks);
+		updateMemo(id, markdownFromBlocks);
 		setMarkdown(markdownFromBlocks);
 		setIsEditing(false);
 	};
@@ -108,15 +112,14 @@ export default function MemoBody({ title, contents }: Props) {
 					</AlertDialogTrigger>
 					<AlertDialogContent>
 						<AlertDialogHeader>
-							<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+							<AlertDialogTitle>Delete this memo?</AlertDialogTitle>
 							<AlertDialogDescription>
-								This action cannot be undone. This will permanently delete your account and remove your data from our
-								servers.
+								This action cannot be undone. The memo will be permanently removed.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>
 							<AlertDialogCancel>Cancel</AlertDialogCancel>
-							<AlertDialogAction>Continue</AlertDialogAction>
+							<AlertDialogAction onClick={() => deleteMemo(id)}>Delete</AlertDialogAction>
 						</AlertDialogFooter>
 					</AlertDialogContent>
 				</AlertDialog>
