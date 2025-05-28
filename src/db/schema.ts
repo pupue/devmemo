@@ -6,19 +6,11 @@ const timestamps = {
 	updatedAt: t.text("updated_at").notNull().default(new Date().toISOString()),
 };
 
-export const users = table(
-	"users",
-	{
-		id: t.int().primaryKey({ autoIncrement: true }),
-		...timestamps,
-		// firstName: t.text("first_name"),
-		// lastName: t.text("last_name"),
-		// email: t.text().notNull(),
-		// invitee: t.int().references((): AnySQLiteColumn => users.id),
-		// role: t.text().$type<"guest" | "user" | "admin">().default("guest"),
-	},
-	// (table) => [t.uniqueIndex("email_idx").on(table.email)],
-);
+export const users = table("users", {
+	id: t.int().primaryKey({ autoIncrement: true }),
+	uuid: t.text("uuid").notNull().unique(),
+	...timestamps,
+});
 
 export const memos = table("memos", {
 	id: t.int().primaryKey({ autoIncrement: true }),
