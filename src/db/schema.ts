@@ -9,6 +9,7 @@ const timestamps = {
 export const users = table("users", {
 	id: t.int().primaryKey({ autoIncrement: true }),
 	uuid: t.text("uuid").notNull().unique(),
+	username: t.text("username").notNull().unique(),
 	...timestamps,
 });
 

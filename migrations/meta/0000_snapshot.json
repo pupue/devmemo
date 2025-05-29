@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "558beb1f-9944-4ec2-8e3a-aefa581fb3da",
+  "id": "8d6fb694-2442-4317-95e9-9700a4718c3e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "memos": {
@@ -28,9 +28,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "user_id": {
-          "name": "user_id",
-          "type": "integer",
+        "user_uuid": {
+          "name": "user_uuid",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -41,7 +41,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-05-28T02:09:02.176Z'"
+          "default": "'2025-05-29T07:03:02.486Z'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -49,20 +49,20 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-05-28T02:09:02.177Z'"
+          "default": "'2025-05-29T07:03:02.487Z'"
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "memos_user_id_users_id_fk": {
-          "name": "memos_user_id_users_id_fk",
+        "memos_user_uuid_users_uuid_fk": {
+          "name": "memos_user_uuid_users_uuid_fk",
           "tableFrom": "memos",
           "tableTo": "users",
           "columnsFrom": [
-            "user_id"
+            "user_uuid"
           ],
           "columnsTo": [
-            "id"
+            "uuid"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -89,13 +89,20 @@
           "notNull": true,
           "autoincrement": false
         },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "created_at": {
           "name": "created_at",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-05-28T02:09:02.176Z'"
+          "default": "'2025-05-29T07:03:02.486Z'"
         },
         "updated_at": {
           "name": "updated_at",
@@ -103,7 +110,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-05-28T02:09:02.177Z'"
+          "default": "'2025-05-29T07:03:02.487Z'"
         }
       },
       "indexes": {
@@ -111,6 +118,13 @@
           "name": "users_uuid_unique",
           "columns": [
             "uuid"
+          ],
+          "isUnique": true
+        },
+        "users_username_unique": {
+          "name": "users_username_unique",
+          "columns": [
+            "username"
           ],
           "isUnique": true
         }

@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
-import { deleteMemo, updateMemo } from "@/actions";
+import { deleteMemo, updateMemo } from "@/actions/memo";
 import type { Memo } from "@/types/memo";
 import { codeBlock } from "@blocknote/code-block";
 import { BlockNoteSchema, defaultBlockSpecs } from "@blocknote/core";

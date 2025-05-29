@@ -1,10 +1,14 @@
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/libs/utils";
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-	({ className, type, ...props }, ref) => {
-		return (
+type InputProps = React.ComponentProps<"input"> & {
+	error?: string;
+};
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, error, ...props }, ref) => {
+	return (
+		<div className="space-y-1">
 			<input
 				type={type}
 				className={cn(
@@ -14,9 +18,10 @@ const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
 				ref={ref}
 				{...props}
 			/>
-		);
-	},
-);
+			{error && <p className="text-sm text-red-500">{error}</p>}
+		</div>
+	);
+});
 Input.displayName = "Input";
 
 export { Input };

@@ -1,5 +1,6 @@
 "use client";
 
+import { createMemo } from "@/actions/memo";
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
@@ -12,8 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-
-import { createMemo } from "@/actions";
 
 type Props = {
 	userId: string;
