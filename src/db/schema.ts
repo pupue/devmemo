@@ -16,7 +16,7 @@ export const memos = table("memos", {
 	id: t.int().primaryKey({ autoIncrement: true }),
 	uuid: t.text().$default(() => generateUniqueString(16)),
 	contents: t.text(),
-	userId: t.int("user_id").references(() => users.id),
+	userUuid: t.text("user_uuid").references(() => users.uuid),
 	...timestamps,
 });
 

@@ -5,17 +5,17 @@ import { memos } from "./db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function getMemos(userId: number) {
-	const rows = await db.select().from(memos).where(eq(memos.userId, userId));
+export async function getMemos(userId: string) {
+	const rows = await db.select().from(memos).where(eq(memos.userUuid, userId));
 	return rows;
 }
 
-export async function createMemo(contents: string) {
+export async function createMemo(userId: string, contents: string) {
 	try {
 		await db.insert(memos).values({
 			uuid: crypto.randomUUID(),
 			contents,
-			userId: 1, // Assuming a user ID of 1 for demonstration purposes
+			userUuid: userId,
 		});
 		revalidatePath("/memos");
 	} catch (error) {

@@ -15,7 +15,11 @@ import { useState } from "react";
 
 import { createMemo } from "@/actions";
 
-export function CreateMemoButton() {
+type Props = {
+	userId: string;
+};
+
+export function CreateMemoButton({ userId }: Props) {
 	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState("");
 
@@ -23,7 +27,7 @@ export function CreateMemoButton() {
 		if (!title.trim()) return;
 
 		const markdown = `# ${title.trim()}`;
-		await createMemo(markdown);
+		await createMemo(userId, markdown);
 
 		setTitle("");
 		setOpen(false);
