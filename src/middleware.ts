@@ -1,22 +1,24 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/sign-in", "/sign-up(.*)", "/auth/init(.*)"]);
+const isPublicRoute = createRouteMatcher(["/api/(.*)", "/sign-in", "/sign-up(.*)", "/auth/init(.*)"]);
 
 export default clerkMiddleware(async (auth, req) => {
-	const path = req.nextUrl.pathname;
 	if (isPublicRoute(req)) return;
 
 	const { userId } = await auth();
 
-	// 未ログイン → /login にリダイレクト
 	if (!userId) {
 		return NextResponse.redirect(new URL("/sign-in", req.url));
 	}
 
-	// / にアクセスした場合のみ、/[user_id] にリダイレクト
 	if (req.nextUrl.pathname === "/") {
-		return NextResponse.redirect(new URL(`/${userId}`, req.url));
+		const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/get-user?uuid=${userId}`);
+
+		if (!res.ok) return NextResponse.redirect(new URL("/setup", req.url));
+
+		const { username } = await res.json();
+		return NextResponse.redirect(new URL(`/${username}`, req.url));
 	}
 });
 

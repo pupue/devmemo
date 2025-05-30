@@ -44,3 +44,12 @@ export async function createUser(data: UsernameData) {
 		username: result.output.username,
 	};
 }
+
+export async function getUser(uuid: string) {
+	return await db
+		.select()
+		.from(users)
+		.where(eq(users.uuid, uuid))
+		.limit(1)
+		.then((rows) => rows[0]);
+}
