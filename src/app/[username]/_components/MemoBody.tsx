@@ -25,6 +25,7 @@ import Markdown from "react-markdown";
 
 type Props = {
 	data: Memo;
+	showEditButton: boolean;
 };
 
 const schema = BlockNoteSchema.create({
@@ -36,7 +37,7 @@ const schema = BlockNoteSchema.create({
 	},
 });
 
-export default function MemoBody({ data }: Props) {
+export default function MemoBody({ data, showEditButton }: Props) {
 	const { id, contents } = data;
 
 	const [isEditing, setIsEditing] = useState(false);
@@ -93,37 +94,39 @@ export default function MemoBody({ data }: Props) {
 				</div>
 			)}
 
-			<div className="flex justify-end space-x-2 mt-2">
-				{isEditing ? (
-					<Button onClick={handeSave} className="bg-green-500 hover:bg-green-500/90 text-white">
-						<DoneIcon />
-					</Button>
-				) : (
-					<Button variant="outline" onClick={() => setIsEditing(true)}>
-						<EditIcon />
-					</Button>
-				)}
-
-				<AlertDialog>
-					<AlertDialogTrigger asChild>
-						<Button variant="destructive">
-							<DeleteIcon />
+			{showEditButton && (
+				<div className="flex justify-end space-x-2 mt-2">
+					{isEditing ? (
+						<Button onClick={handeSave} className="bg-green-500 hover:bg-green-500/90 text-white">
+							<DoneIcon />
 						</Button>
-					</AlertDialogTrigger>
-					<AlertDialogContent>
-						<AlertDialogHeader>
-							<AlertDialogTitle>Delete this memo?</AlertDialogTitle>
-							<AlertDialogDescription>
-								This action cannot be undone. The memo will be permanently removed.
-							</AlertDialogDescription>
-						</AlertDialogHeader>
-						<AlertDialogFooter>
-							<AlertDialogCancel>Cancel</AlertDialogCancel>
-							<AlertDialogAction onClick={() => deleteMemo(id)}>Delete</AlertDialogAction>
-						</AlertDialogFooter>
-					</AlertDialogContent>
-				</AlertDialog>
-			</div>
+					) : (
+						<Button variant="outline" onClick={() => setIsEditing(true)}>
+							<EditIcon />
+						</Button>
+					)}
+
+					<AlertDialog>
+						<AlertDialogTrigger asChild>
+							<Button variant="destructive">
+								<DeleteIcon />
+							</Button>
+						</AlertDialogTrigger>
+						<AlertDialogContent>
+							<AlertDialogHeader>
+								<AlertDialogTitle>Delete this memo?</AlertDialogTitle>
+								<AlertDialogDescription>
+									This action cannot be undone. The memo will be permanently removed.
+								</AlertDialogDescription>
+							</AlertDialogHeader>
+							<AlertDialogFooter>
+								<AlertDialogCancel>Cancel</AlertDialogCancel>
+								<AlertDialogAction onClick={() => deleteMemo(id)}>Delete</AlertDialogAction>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+					</AlertDialog>
+				</div>
+			)}
 		</div>
 	);
 }

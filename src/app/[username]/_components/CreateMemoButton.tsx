@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 type Props = {
-	userId: string;
+	userId: number;
 };
 
 export function CreateMemoButton({ userId }: Props) {

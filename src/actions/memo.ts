@@ -2,20 +2,29 @@
 
 import { memos } from "@/db/schema";
 import { db } from "@/libs/db";
-import { eq } from "drizzle-orm";
+import { desc, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function getMemos(userId: string) {
-	const rows = await db.select().from(memos).where(eq(memos.userUuid, userId));
-	return rows;
+export async function getMemosByUserId(userId: number, opts: { offset: number; limit: number }) {
+	return await db
+		.select()
+		.from(memos)
+		.where(eq(memos.userId, userId))
+		.orderBy(desc(memos.createdAt))
+		.limit(opts.limit)
+		.offset(opts.offset);
 }
 
-export async function createMemo(userId: string, contents: string) {
+export async function countMemosByUserId(userId: number) {
+	const result = await db.select({ count: sql<number>`count(*)` }).from(memos).where(eq(memos.userId, userId));
+	return result[0].count;
+}
+
+export async function createMemo(userId: number, contents: string) {
 	try {
 		await db.insert(memos).values({
-			uuid: crypto.randomUUID(),
 			contents,
-			userUuid: userId,
+			userId,
 		});
 		revalidatePath("/memos");
 	} catch (error) {

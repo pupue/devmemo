@@ -23,7 +23,7 @@ export async function createUser(data: UsernameData) {
 			errors: { username: ["ログイン情報が取得できません"] },
 		};
 	}
-	const existing = await db.select().from(users).where(eq(users.uuid, user.id));
+	const existing = await db.select().from(users).where(eq(users.username, data.username));
 
 	if (existing.length > 0) {
 		return {
@@ -33,7 +33,6 @@ export async function createUser(data: UsernameData) {
 	}
 
 	await db.insert(users).values({
-		uuid: user.id,
 		username: result.output.username,
 		createdAt: new Date().toISOString(),
 		updatedAt: new Date().toISOString(),
@@ -45,11 +44,8 @@ export async function createUser(data: UsernameData) {
 	};
 }
 
-export async function getUser(uuid: string) {
-	return await db
-		.select()
-		.from(users)
-		.where(eq(users.uuid, uuid))
-		.limit(1)
-		.then((rows) => rows[0]);
+export async function getUserByUsername(username: string) {
+	const result = await db.select().from(users).where(eq(users.username, username)).limit(1);
+
+	return result[0] ?? null;
 }
