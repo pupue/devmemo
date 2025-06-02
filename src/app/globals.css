@@ -5,15 +5,16 @@
 body {
 	line-height: 1.75;
 }
-body:before {
+body::before {
 	position: fixed;
 	top: 0;
-	left: 16px;
+	left: 0;
 	display: block;
 	content: "";
-	width: 4px;
+	width: 20px;
 	height: 100vh;
-	background: #000;
+	background: #f1f2f3;
+	border-right: 4px solid #000;
 }
 
 .cl-footerAction {
