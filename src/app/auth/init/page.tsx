@@ -1,19 +1,18 @@
-import { getUser } from "@/actions/user";
-import { auth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import AuthInitForm from "./_components/AuthInitForm";
 
 export default async function Page() {
-	const { userId } = await auth();
+	const user = await currentUser();
 
-	if (!userId) {
+	if (!user) {
 		redirect("/");
 	}
 
-	const user = await getUser(userId);
+	const username = user.publicMetadata?.username;
 
-	if (user?.username) {
-		redirect(`/${user.username}`);
+	if (username) {
+		redirect(`/${username}`);
 	}
 
 	return <AuthInitForm />;

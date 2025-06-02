@@ -2,8 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+	line-height: 1.75;
+}
+body:before {
+	position: fixed;
+	top: 0;
+	left: 16px;
+	display: block;
+	content: "";
+	width: 4px;
+	height: 100vh;
+	background: #000;
+}
+
 .cl-footerAction {
 	display: none;
+}
+
+.cl-headerTitle {
+	margin-bottom: 8px;
+}
+
+.cl-socialButtonsBlockButton {
+	padding: 16px;
+	border-radius: 6px;
 }
 
 @layer base {

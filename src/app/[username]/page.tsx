@@ -14,7 +14,6 @@ export default async function Home() {
 	return (
 		<div className="max-w-5xl py-10 px-5 mx-auto">
 			<div className="flex justify-between items-center mb-8">
-				<h1 className="text-6xl font-bold">Devmemo</h1>
 				<CreateMemoButton userId={user.id} />
 			</div>
 			<Accordion type="single" collapsible className="w-full">
