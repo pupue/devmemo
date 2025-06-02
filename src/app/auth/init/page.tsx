@@ -12,7 +12,7 @@ export default async function Page() {
 
 	const user = await getUser(userId);
 
-	if (user.username) {
+	if (user?.username) {
 		redirect(`/${user.username}`);
 	}
 
