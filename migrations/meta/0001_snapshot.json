@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "0fb6ccdc-3eb2-4edf-b425-570cf5b07689",
-  "prevId": "8d6fb694-2442-4317-95e9-9700a4718c3e",
+  "id": "90ad1a15-c01b-46c5-9ca9-a69d3a0ff654",
+  "prevId": "564230da-b64f-4395-97bd-ca00e3aa0dcf",
   "tables": {
     "memos": {
       "name": "memos",
@@ -13,6 +13,14 @@
           "primaryKey": true,
           "notNull": true,
           "autoincrement": true
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "''"
         },
         "contents": {
           "name": "contents",
@@ -34,7 +42,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-06-02T07:58:49.868Z'"
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -42,7 +50,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-06-02T07:58:49.868Z'"
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
         }
       },
       "indexes": {},
@@ -88,7 +96,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-06-02T07:58:49.868Z'"
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
         },
         "updated_at": {
           "name": "updated_at",
@@ -96,7 +104,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'2025-06-02T07:58:49.868Z'"
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
         }
       },
       "indexes": {
@@ -119,9 +127,7 @@
   "_meta": {
     "schemas": {},
     "tables": {},
-    "columns": {
-      "\"memos\".\"user_uuid\"": "\"memos\".\"user_id\""
-    }
+    "columns": {}
   },
   "internal": {
     "indexes": {}

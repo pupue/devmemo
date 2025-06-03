@@ -4,7 +4,7 @@ import { extractFirstErrors } from "@/app/utils/validation";
 import { users } from "@/db/schema";
 import { db } from "@/libs/db";
 import { type UsernameData, UsernameSchema } from "@/utils/validation";
-import { currentUser } from "@clerk/nextjs/server";
+import { clerkClient, currentUser } from "@clerk/nextjs/server";
 import { eq } from "drizzle-orm";
 import * as v from "valibot";
 
@@ -34,8 +34,13 @@ export async function createUser(data: UsernameData) {
 
 	await db.insert(users).values({
 		username: result.output.username,
-		createdAt: new Date().toISOString(),
-		updatedAt: new Date().toISOString(),
+	});
+
+	const client = await clerkClient();
+	await client.users.updateUserMetadata(user.id, {
+		publicMetadata: {
+			username: result.output.username,
+		},
 	});
 
 	return {

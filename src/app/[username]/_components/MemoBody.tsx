@@ -25,7 +25,7 @@ import Markdown from "react-markdown";
 
 type Props = {
 	data: Memo;
-	showEditButton: boolean;
+	isEditMode: boolean;
 };
 
 const schema = BlockNoteSchema.create({
@@ -37,7 +37,7 @@ const schema = BlockNoteSchema.create({
 	},
 });
 
-export default function MemoBody({ data, showEditButton }: Props) {
+export default function MemoBody({ data, isEditMode }: Props) {
 	const { id, contents } = data;
 
 	const [isEditing, setIsEditing] = useState(false);
@@ -94,7 +94,7 @@ export default function MemoBody({ data, showEditButton }: Props) {
 				</div>
 			)}
 
-			{showEditButton && (
+			{isEditMode && (
 				<div className="flex justify-end space-x-2 mt-2">
 					{isEditing ? (
 						<Button onClick={handeSave} className="bg-green-500 hover:bg-green-500/90 text-white">
