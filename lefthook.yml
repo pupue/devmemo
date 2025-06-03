@@ -2,9 +2,7 @@ pre-commit:
   parallel: true
   jobs:
     - name: typecheck
-      run: |
-        rm -rf .next/types
-        npx tsc -p tsconfig.json --noEmit
+      run: npx tsc -p tsconfig.json --noEmit
       glob:
         - "src/**/*.ts"
         - "src/**/*.tsx"
