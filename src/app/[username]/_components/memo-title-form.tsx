@@ -50,7 +50,7 @@ export default function MemoTitleForm({ userId }: Props) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<div className="flex items-center gap-2">
+			<div className="bg-gray-50 p-8 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
 				<Input name="title" type="text" placeholder="タイトル" />
 				<Button type="submit">追加</Button>
 			</div>

@@ -33,8 +33,10 @@ export default async function MemosPage({
 
 	return (
 		<Container>
-			{myMemos && <MemoTitleForm userId={user.id} />}
-			<MemoList data={memos} isEditMode={myMemos} currentPage={page} totalPages={totalPages} />
+			<div className="space-y-10">
+				{myMemos && <MemoTitleForm userId={user.id} />}
+				<MemoList data={memos} isEditMode={myMemos} currentPage={page} totalPages={totalPages} />
+			</div>
 		</Container>
 	);
 }
