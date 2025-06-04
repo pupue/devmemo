@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import {
 	Dialog,
-	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -13,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Search } from "lucide-react";
 import HeaderNavButton from "./header-nav-button";
+import SearchForm from "./search-form";
 
 export default function SearchButton() {
 	return (
@@ -24,15 +24,12 @@ export default function SearchButton() {
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Edit profile</DialogTitle>
-					<DialogDescription>Make changes to your profile here. Click save when you&apos;re done.</DialogDescription>
+					<DialogTitle>Search</DialogTitle>
+					<DialogDescription>検索してみてね</DialogDescription>
 				</DialogHeader>
-				<div>本文</div>
+				<SearchForm />
 				<DialogFooter>
-					<DialogClose asChild>
-						<Button variant="outline">Cancel</Button>
-					</DialogClose>
-					<Button type="submit">Save changes</Button>
+					<Button type="submit">検索</Button>
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>

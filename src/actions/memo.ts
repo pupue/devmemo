@@ -3,8 +3,27 @@
 import { memos } from "@/db/schema";
 import { db } from "@/libs/db";
 import type { InsertMemo } from "@/types/memo";
-import { desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, like, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+
+/*
+ * メモを検索する
+ */
+type SearchMemosParams = {
+	userId: number;
+	query: string;
+	limit?: number;
+};
+export async function searchMemos({ userId, query, limit = 5 }: SearchMemosParams) {
+	if (!query.trim()) return [];
+
+	return await db
+		.select()
+		.from(memos)
+		.where(and(eq(memos.userId, userId), or(like(memos.title, `%${query}%`), like(memos.contents, `%${query}%`))))
+		.orderBy(desc(memos.created_at))
+		.limit(limit);
+}
 
 /**
  * user_idからメモを取得する

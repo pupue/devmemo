@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import Header from "./_components/header";
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ const localization = {
 	},
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
@@ -30,8 +31,10 @@ export default function RootLayout({
 		<ClerkProvider localization={localization}>
 			<html lang="ja">
 				<body className={`${nunito.className} antialiased bg-slate-50 text-slate-950`}>
-					<Header />
-					{children}
+					<NuqsAdapter>
+						<Header />
+						{children}
+					</NuqsAdapter>
 				</body>
 			</html>
 		</ClerkProvider>
