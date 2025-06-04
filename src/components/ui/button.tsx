@@ -3,6 +3,7 @@ import { type VariantProps, cva } from "class-variance-authority";
 import * as React from "react";
 
 import { cn } from "@/libs/utils";
+import { Loader2Icon } from "lucide-react";
 
 const buttonVariants = cva(
 	"inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -37,9 +38,23 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant, size, asChild = false, ...props }, ref) => {
+	({ className, variant, size, asChild = false, disabled, children, ...props }, ref) => {
 		const Comp = asChild ? Slot : "button";
-		return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+		return (
+			<Comp
+				className={cn(buttonVariants({ variant, size, className }), "relative")}
+				ref={ref}
+				disabled={disabled}
+				{...props}
+			>
+				<span className={disabled ? "invisible" : "visible"}>{children}</span>
+				{disabled && (
+					<span className="absolute inset-0 flex items-center justify-center">
+						<Loader2Icon className="animate-spin" />
+					</span>
+				)}
+			</Comp>
+		);
 	},
 );
 Button.displayName = "Button";

@@ -15,10 +15,12 @@ type Props = {
 
 export default function MemoTitleForm({ userId }: Props) {
 	const [errors, setErrors] = useState<MemoTitleErrors>({});
+	const [loading, setLoading] = useState(false);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setErrors({});
+		setLoading(true);
 
 		const form = e.currentTarget;
 
@@ -45,6 +47,8 @@ export default function MemoTitleForm({ userId }: Props) {
 		} catch (error) {
 			console.error("User creation failed:", error);
 			setErrors({ title: "エラーが発生しました" });
+		} finally {
+			setLoading(false);
 		}
 	};
 
@@ -52,7 +56,9 @@ export default function MemoTitleForm({ userId }: Props) {
 		<form onSubmit={handleSubmit}>
 			<div className="bg-gray-50 p-8 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
 				<Input name="title" type="text" placeholder="タイトル" />
-				<Button type="submit">追加</Button>
+				<Button disabled={loading} type="submit">
+					追加
+				</Button>
 			</div>
 			<ErrorMessage>{errors.title}</ErrorMessage>
 		</form>
