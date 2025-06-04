@@ -1,14 +1,8 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import {
-	Pagination as ClerkPagination,
-	PaginationContent,
-	PaginationEllipsis,
-	PaginationItem,
-	PaginationLink,
-	PaginationNext,
-	PaginationPrevious,
-} from "@/components/ui/pagination";
+import { cn } from "@/libs/utils";
 import type { Memo } from "@/types/memo";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import MemoBody from "./MemoBody";
 
 type Props = {
@@ -31,10 +25,27 @@ export default function MemoList({ data: memos, currentPage, totalPages, isEditM
 					</AccordionItem>
 				))}
 			</Accordion>
-			<Pagination currentPage={currentPage} totalPages={totalPages} />
+			<div className="flex justify-end mt-8">
+				<Pagination currentPage={currentPage} totalPages={totalPages} />
+			</div>
 		</div>
 	);
 }
+
+const paginationMeta = {
+	prev: {
+		label: "Go to previous page",
+		icon: <ChevronLeft color="white" className="h-4 w-4" />,
+		getPage: (current: number) => current - 1,
+	},
+	next: {
+		label: "Go to next page",
+		icon: <ChevronRight color="white" className="h-4 w-4" />,
+		getPage: (current: number) => current + 1,
+	},
+} as const;
+
+type PaginationType = keyof typeof paginationMeta;
 
 function Pagination({
 	currentPage,
@@ -43,44 +54,41 @@ function Pagination({
 	currentPage: number;
 	totalPages: number;
 }) {
-	const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
-	const maxVisible = 5;
-	const shouldEllipsis = totalPages > maxVisible;
-	const visiblePages = shouldEllipsis ? pageNumbers.slice(0, maxVisible) : pageNumbers;
+	return (
+		<nav>
+			<ul className="flex gap-2">
+				<PaginationItem type="prev" currentPage={currentPage} disabled={currentPage <= 1} />
+				<PaginationItem type="next" currentPage={currentPage} disabled={currentPage >= totalPages} />
+			</ul>
+		</nav>
+	);
+}
+
+function PaginationItem({
+	type,
+	currentPage,
+	disabled,
+}: {
+	type: PaginationType;
+	currentPage: number;
+	disabled: boolean;
+}) {
+	const { label, icon, getPage } = paginationMeta[type];
+	const page = getPage(currentPage);
 
 	return (
-		<ClerkPagination className="mt-8">
-			<PaginationContent>
-				{/* 前へ */}
-				{currentPage > 1 && (
-					<PaginationItem>
-						<PaginationPrevious href={`?page=${currentPage - 1}`} />
-					</PaginationItem>
+		<li>
+			<Link
+				aria-label={label}
+				aria-disabled={disabled}
+				href={disabled ? "#" : `?page=${page}`}
+				className={cn(
+					"flex items-center justify-center w-8 aspect-square",
+					disabled ? "pointer-events-none bg-gray-400" : "bg-black",
 				)}
-
-				{/* ページ番号 */}
-				{visiblePages.map((p) => (
-					<PaginationItem key={p}>
-						<PaginationLink href={`?page=${p}`} isActive={p === currentPage}>
-							{p}
-						</PaginationLink>
-					</PaginationItem>
-				))}
-
-				{/* 省略記号 */}
-				{shouldEllipsis && (
-					<PaginationItem>
-						<PaginationEllipsis />
-					</PaginationItem>
-				)}
-
-				{/* 次へ */}
-				{currentPage < totalPages && (
-					<PaginationItem>
-						<PaginationNext href={`?page=${currentPage + 1}`} />
-					</PaginationItem>
-				)}
-			</PaginationContent>
-		</ClerkPagination>
+			>
+				{icon}
+			</Link>
+		</li>
 	);
 }

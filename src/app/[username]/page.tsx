@@ -12,15 +12,16 @@ export default async function MemosPage({
 	params,
 	searchParams,
 }: {
-	params: { username: string };
-	searchParams: { page?: string };
+	params: Promise<{ username: string }>;
+	searchParams: Promise<{ page?: string }>;
 }) {
-	const { username } = params;
+	const { username } = await params;
 
 	const user = await getUserByUsername(username);
 	if (!user) return notFound();
 
-	const page = Number(searchParams.page ?? "1");
+	const { page: searchParamsPage } = await searchParams;
+	const page = Number(searchParamsPage ?? "1");
 	const limit = 10;
 	const offset = (page - 1) * limit;
 	const memos = await getMemosByUserId(user.id, { offset, limit });

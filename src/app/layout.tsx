@@ -29,7 +29,7 @@ export default function RootLayout({
 	return (
 		<ClerkProvider localization={localization}>
 			<html lang="ja">
-				<body className={`${nunito.className} antialiased`}>
+				<body className={`${nunito.className} antialiased bg-slate-50 text-slate-950`}>
 					<Header />
 					{children}
 				</body>
