@@ -2,10 +2,10 @@
 
 import { createMemo } from "@/actions/memo";
 import { extractFirstErrors } from "@/app/utils/validation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import type { InputProps } from "@/components/ui/input";
 import ErrorMessage from "@/components/ui/typography/error-message";
 import { type MemoTitleErrors, MemoTitleSchema } from "@/utils/validation";
+import { SendHorizontal as SubmitIcon } from "lucide-react";
 import { useState } from "react";
 import * as v from "valibot";
 
@@ -20,7 +20,6 @@ export default function MemoTitleForm({ userId }: Props) {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setErrors({});
-		setLoading(true);
 
 		const form = e.currentTarget;
 
@@ -38,6 +37,8 @@ export default function MemoTitleForm({ userId }: Props) {
 			return;
 		}
 
+		setLoading(true);
+
 		try {
 			await createMemo({
 				userId,
@@ -54,13 +55,27 @@ export default function MemoTitleForm({ userId }: Props) {
 
 	return (
 		<form onSubmit={handleSubmit}>
-			<div className="bg-gray-50 p-8 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
-				<Input name="title" type="text" placeholder="タイトル" />
-				<Button disabled={loading} type="submit">
-					追加
-				</Button>
+			<div className="p-4">
+				<div className="relative">
+					<TitleInput name="title" type="text" placeholder="タイトル" />
+					<div className="flex absolute top-2/4 -translate-y-2/4 right-4">
+						<button disabled={loading} type="submit">
+							<SubmitIcon size={16} color="#4a6545" />
+						</button>
+					</div>
+				</div>
 			</div>
 			<ErrorMessage>{errors.title}</ErrorMessage>
 		</form>
+	);
+}
+
+function TitleInput(props: InputProps) {
+	return (
+		<input
+			{...props}
+			type="text"
+			className="rounded w-full py-2 px-4 pr-20 outline-1 outline-key placeholder:text-sm"
+		/>
 	);
 }

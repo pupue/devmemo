@@ -9,10 +9,7 @@ type Props<C extends ElementType = "button"> = {
 export default function HeaderNavButton<C extends ElementType = "button">({ as, children, ...props }: Props<C>) {
 	const Component = as || "button";
 	return (
-		<Component
-			{...props}
-			className="bg-gray-100 flex items-center justify-center w-10 aspect-square hover:bg-gray-100/80"
-		>
+		<Component {...props} className="bg-white flex items-center justify-center w-10 aspect-square hover:bg-[#f97930]">
 			{children}
 		</Component>
 	);

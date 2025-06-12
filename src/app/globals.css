@@ -14,7 +14,7 @@ body::before {
 	width: 20px;
 	height: 100vh;
 	background: #f1f2f3;
-	border-right: 4px solid #000;
+	border-right: 1px solid #4a6545;
 }
 
 .cl-footerAction {
@@ -31,6 +31,15 @@ body::before {
 	border-radius: 6px;
 	padding: 8px 16px;
 	margin: auto;
+}
+
+.editor-area > div,
+.editor-area .bn-container,
+.editor-area .bn-editor {
+	height: 100%;
+}
+.editor-area .bn-editor {
+	padding: 20px 54px;
 }
 
 @layer base {

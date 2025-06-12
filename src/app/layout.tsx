@@ -30,10 +30,12 @@ export default async function RootLayout({
 	return (
 		<ClerkProvider localization={localization}>
 			<html lang="ja">
-				<body className={`${nunito.className} antialiased bg-slate-50 text-slate-950`}>
+				<body className={`${nunito.className} antialiased bg-[#f5f5f5] text-key`}>
 					<NuqsAdapter>
-						<Header />
-						{children}
+						<div className="grid grid-rows-[auto_1fr] h-svh">
+							<Header />
+							{children}
+						</div>
 					</NuqsAdapter>
 				</body>
 			</html>

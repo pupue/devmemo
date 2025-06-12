@@ -3,7 +3,7 @@ import * as React from "react";
 import { cn } from "@/libs/utils";
 import ErrorMessage from "./typography/error-message";
 
-type InputProps = React.ComponentProps<"input"> & {
+export type InputProps = React.ComponentProps<"input"> & {
 	error?: string;
 };
 
