@@ -15,7 +15,7 @@ export default function MemoList({ data: memos, activeMemoId }: Props) {
 					key={memo.id}
 					href={`?id=${memo.id}`}
 					className={cn(
-						"cursor-pointer block w-full border-b border-key p-4 hover:bg-gray-200",
+						"text-sm cursor-pointer block w-full border-b border-key p-4 hover:bg-gray-200",
 						activeMemoId === memo.id && "pointer-events-none bg-gray-300",
 					)}
 				>
