@@ -11,7 +11,7 @@ import { useCreateBlockNote } from "@blocknote/react";
 import Markdown from "react-markdown";
 
 type Props = {
-	data: Memo;
+	memo: Memo;
 	isEditMode: boolean;
 };
 
@@ -24,8 +24,8 @@ const schema = BlockNoteSchema.create({
 	},
 });
 
-export default function MemoBody({ data, isEditMode }: Props) {
-	const { id, contents } = data;
+export default function MemoBody({ memo, isEditMode }: Props) {
+	const { id, contents } = memo;
 
 	const [isEditing, setIsEditing] = useState(false);
 	const [markdown, setMarkdown] = useState<string>(contents ?? "");

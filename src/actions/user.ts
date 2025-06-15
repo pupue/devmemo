@@ -54,3 +54,13 @@ export async function getUserByUsername(username: string) {
 
 	return result[0] ?? null;
 }
+
+/**
+ * clerkのusernameとDBのusernameが一致するか確認する
+ */
+export async function isClerkUsernameMatchDb(username: string) {
+	const user = await currentUser();
+	if (!user) return false;
+
+	return username === user.publicMetadata.username;
+}

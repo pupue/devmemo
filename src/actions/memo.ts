@@ -6,6 +6,13 @@ import type { InsertMemo } from "@/types/memo";
 import { and, desc, eq, like, or, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
+/**
+ * メモを一件取得する
+ */
+export async function getMemoById(id: number) {
+	return await db.select().from(memos).where(eq(memos.id, id)).limit(1);
+}
+
 /*
  * メモを検索する
  */
