@@ -1,21 +1,22 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import Sidebar from "./_components/sidebar";
 
 export default async function RootLayout({
-	list,
-	detail,
+	children,
+	params,
 }: Readonly<{
-	list: React.ReactNode;
-	detail: React.ReactNode;
+	children: React.ReactNode;
+	params: Promise<{ username: string }>;
 }>) {
+	const { username } = await params;
+
 	return (
 		<ResizablePanelGroup direction="horizontal">
 			<ResizablePanel defaultSize={25}>
-				<div className="pl-5 border-r border-key">
-					<div className="grid grid-rows-[auto,1fr,auto] h-[calc(100vh-82px)] overflow-y-scroll">{list}</div>
-				</div>
+				<Sidebar username={username} />
 			</ResizablePanel>
 			<ResizableHandle />
-			<ResizablePanel defaultSize={75}>{detail}</ResizablePanel>
+			<ResizablePanel defaultSize={75}>{children}</ResizablePanel>
 		</ResizablePanelGroup>
 	);
 }

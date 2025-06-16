@@ -1,7 +1,7 @@
 import { getMemoById } from "@/actions/memo";
 import { isClerkUsernameMatchDb } from "@/actions/user";
 import { notFound } from "next/navigation";
-import MemoBody from "../../_components/memo-body";
+import MemoBody from "../_components/memo-body";
 
 export default async function MemosDetailPage({
 	params,

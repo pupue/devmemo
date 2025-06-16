@@ -1,27 +1,26 @@
-import { cn } from "@/libs/utils";
-import type { Memo } from "@/types/memo";
-import Link from "next/link";
+import { getMemosByUserId } from "@/actions/memo";
+import { getUserByUsername } from "@/actions/user";
+import { notFound } from "next/navigation";
+import MemoListItemButton from "./memo-list-item-button";
 
 type Props = {
-	memos: Memo[];
-	activeMemoId: number | undefined;
 	username: string;
 };
 
-export default function MemoList({ memos, activeMemoId, username }: Props) {
+export default async function MemoList({ username }: Props) {
+	const user = await getUserByUsername(username);
+	if (!user) return notFound();
+
+	const limit = 10;
+	const offset = (1 - 1) * limit;
+	const memos = await getMemosByUserId(user.id, { offset, limit });
+
 	return (
 		<div className="border-t border-key">
 			{memos.map((memo) => (
-				<Link
-					key={memo.id}
-					href={`/${username}/${memo.id}`}
-					className={cn(
-						"text-sm cursor-pointer block w-full border-b border-key p-4 hover:bg-gray-200",
-						activeMemoId === memo.id && "pointer-events-none bg-gray-300",
-					)}
-				>
+				<MemoListItemButton key={memo.id} href={`/${username}/${memo.id}`}>
 					{memo.title}
-				</Link>
+				</MemoListItemButton>
 			))}
 		</div>
 	);
