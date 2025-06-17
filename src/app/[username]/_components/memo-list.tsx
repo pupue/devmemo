@@ -25,7 +25,7 @@ export default async function MemoList({ username }: Props) {
 			<div className="overflow-y-auto">
 				<div className="border-t border-key">
 					{memos.map((memo) => (
-						<MemoListItemButton key={memo.id} href={`/${username}/${memo.id}`}>
+						<MemoListItemButton key={memo.id} id={memo.id} username={username} href={`/${username}/${memo.id}`}>
 							{memo.title}
 						</MemoListItemButton>
 					))}
