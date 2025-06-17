@@ -4,7 +4,7 @@ export default function Logo() {
 	return (
 		<div>
 			<Link href="/" className="text-2xl font-extrabold">
-				Noteon
+				ただ思いついたことをさっとメモに残していくアプリ
 			</Link>
 		</div>
 	);

@@ -59,8 +59,8 @@ export async function countMemosByUserId(userId: number) {
 export type CreateMemoProps = Pick<InsertMemo, "userId" | "title">;
 export async function createMemo(data: CreateMemoProps) {
 	try {
-		await db.insert(memos).values({ ...data });
-		revalidatePath("/memos");
+		const [insertedMemo] = await db.insert(memos).values(data).returning();
+		return insertedMemo;
 	} catch (error) {
 		console.error("Error creating memo:", error);
 		throw new Error("Failed to create memo");
