@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
@@ -32,6 +32,7 @@ export default function MemoBody({ memo, isEditMode }: Props) {
 
 	const editor = useCreateBlockNote({ schema, codeBlock });
 
+	// 初期データ読み込み
 	useEffect(() => {
 		async function loadInitialHTML() {
 			const blocks = await editor.tryParseMarkdownToBlocks(contents ?? "");
@@ -40,14 +41,33 @@ export default function MemoBody({ memo, isEditMode }: Props) {
 		loadInitialHTML();
 	}, [editor, contents]);
 
-	const handeSave = async () => {
+	// オートセーブ処理
+	const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+	const lastSavedMarkdown = useRef<string>(contents ?? "");
+	useEffect(() => {
 		if (!editor) return;
-		const blocks = editor.document;
-		const markdownFromBlocks = await editor.blocksToMarkdownLossy(blocks);
-		updateMemo(id, markdownFromBlocks);
-		setMarkdown(markdownFromBlocks);
-		setIsEditing(false);
-	};
+
+		const unsubscribe = editor.onChange(() => {
+			if (saveTimeout.current) clearTimeout(saveTimeout.current);
+
+			saveTimeout.current = setTimeout(async () => {
+				const blocks = editor.document;
+				const markdownFromBlocks = await editor.blocksToMarkdownLossy(blocks);
+
+				if (markdownFromBlocks !== lastSavedMarkdown.current) {
+					console.log("auto-save");
+					await updateMemo(id, markdownFromBlocks);
+					lastSavedMarkdown.current = markdownFromBlocks;
+					setMarkdown(markdownFromBlocks);
+				}
+			}, 2000);
+		});
+
+		return () => {
+			unsubscribe?.();
+			if (saveTimeout.current) clearTimeout(saveTimeout.current);
+		};
+	}, [editor, id]);
 
 	if (!editor) return <p>読み込み中...</p>;
 
